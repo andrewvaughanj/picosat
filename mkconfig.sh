@@ -7,12 +7,10 @@ die () {
 
 [ -f makefile ] || die "can not find 'makefile'"
 
-sed \
-  -e '/^C[A-Z]*=/!d' \
+grep "^C[A-Z]*=" makefile | sed \
   -e 's,^,#define PICOSAT_,' \
   -e 's,= *, ",' \
-  -e 's,$,",' \
-  makefile
+  -e 's,$,",'
 
 id=""
 if [ -d .git -a -f .git/HEAD ]

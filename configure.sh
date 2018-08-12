@@ -11,6 +11,7 @@ shared=no
 thirtytwobit=no
 static=no
 rcode=no
+win32=no
 
 while [ $# -gt 0 ]
 do
@@ -27,6 +28,7 @@ do
     -32|--32|-m32) thirtytwobit=yes;;
     -static|--static) static=yes;;
     -shared|--shared) shared=yes;;
+    -win32|--win32) win32=yes;;
     *) cat <<EOF
 usage: ./configure.sh [<option> ...]
 
@@ -43,6 +45,7 @@ where <option> is one of the following:
   -rcode|--no-rcode    enable/disable compatibility for used in R exension
   -static|--static     produce static binary
   -shared|--shared     produce shared library
+  -win32|--win32       perform a Windows build
 EOF
 exit 1
 ;;
@@ -108,6 +111,13 @@ then
       fi
       ;;
   esac
+fi
+
+if [ $win32 = yes ]
+then
+    CFLAGS="$CFLAGS -DNPOSIX -DNGETRUSAGE -DNALLSIGNALS"
+else
+    :
 fi
 
 if [ $rcode = yes ]
